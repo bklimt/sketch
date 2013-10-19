@@ -1,0 +1,59 @@
+
+<html>
+  <head>
+    <link rel="stylesheet" src="css/pepper-grinder/jquery-ui-1.10.3.custom.css" />
+
+    <script src="ext/jquery-2.0.3.js"></script>
+    <script src="ext/jquery-ui-1.10.3.custom.js"></script>
+    <script src="ext/underscore.js"></script>
+    <script src="ext/backbone.js"></script>
+    <script src="ext/parse.js"></script>
+
+    <script src="src/attributes.js"></script>
+
+    <script src="src/magnet.js"></script>
+
+    <script src="src/line.js"></script>
+    <script src="src/rectangle.js"></script>
+    <script src="src/oval.js"></script>
+    <script src="src/circle.js"></script>
+    <script src="src/image.js"></script>
+
+    <script src="src/diagram.js"></script>
+
+    <script src="src/tool.js"></script>
+    <script src="src/select_tool.js"></script>
+    <script src="src/line_tool.js"></script>
+    <script src="src/rectangle_tool.js"></script>
+    <script src="src/oval_tool.js"></script>
+    <script src="src/circle_tool.js"></script>
+    <script src="src/image_drop.js"></script>
+
+    <script src="src/app.js"></script>
+
+  </head>
+  <style>
+
+    body { background-color: #cccccc }
+    #toolbar { height: 50px; }
+    #image-drop { background-color: #ffccff }
+
+  </style>
+  <body>
+    <div id="toolbar">
+      <button onclick="LineTool.select()" />line</button>
+      <button onclick="RectangleTool.select()" />rectangle</button>
+      <button onclick="OvalTool.select()" />oval</button>
+      <button onclick="CircleTool.select()" />circle</button>
+      <span id="image-drop">Drop an image here</span>
+      <div id="attributes">
+        <span>fill color: <input id="fillColor"></input></span>
+        <span>stroke color: <input id="strokeColor"></input></span>
+        <span>stroke width: <input id="strokeWidth"></input></span>
+      </div>
+    </div>
+
+    <canvas width="800" height="500"></canvas>
+  </body>
+</html>
+
