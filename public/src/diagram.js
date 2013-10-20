@@ -36,6 +36,8 @@ var Diagram = Backbone.Model.extend({
         throw new Error("Unknown shape type: " + shape.type);
       }
     }, this);
+
+    this.redraw();
   },
 
   draw: function(canvas) {
@@ -57,6 +59,34 @@ var Diagram = Backbone.Model.extend({
     context.fillStyle = "rgb(255, 255, 255)";
     context.fillRect(0, 0, 800, 500);
     this.draw();
+  },
+
+  export: function() {
+    var canvas = $("canvas");
+    var dataURL = canvas[0].toDataURL("image/png");
+    var base64 = /^data:image\/png;base64,(.*)$/.exec(dataURL)[1]
+
+    var file = new Parse.File("export.png", { base64: base64 });
+
+    Parse.Promise.as().then(function() {
+      return file.save();
+
+    }).then(function(file) {
+      var obj = new Parse.Object("ImageFile");
+      obj.set("file", file);
+      return obj.save();
+
+    }).then(function(obj) {
+      var url = "http://anysketch.parseapp.com/file/" + obj.id;
+      var template = "<a target='_blank' href='<%= url %>'>exported file</a>";
+      var html = _.template(template)({
+        url: url
+      });
+      $("#export-link").html(html);
+
+    }).then(null, function(error) {
+      console.error(error);
+    });
   },
 
   getMagnetAtPoint: function(point) {

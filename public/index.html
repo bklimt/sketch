@@ -46,12 +46,14 @@
     <div id="content">
       <div id="toolbar">
         <button onclick="diagram.save()">save</button>
+        <button onclick="diagram.export()">export</button>
         <button onclick="LineTool.select()">line</button>
         <button onclick="RectangleTool.select()">rectangle</button>
         <button onclick="OvalTool.select()">oval</button>
         <button onclick="CircleTool.select()">circle</button>
         <button onclick="TextTool.select()">text</button>
         <span id="image-drop">Drop an image here</span>
+        <span id="export-link"></span>
         <div id="attributes">
           <span>fill color: <input id="fillColor"></input></span>
           <span>stroke color: <input id="strokeColor"></input></span>
