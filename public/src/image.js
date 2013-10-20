@@ -36,6 +36,9 @@ var SketchImage = Rectangle.extend({
 
     this.data = new Image();
     this.data.src = this.url;
+    this.data.onload = function() {
+      diagram.redraw();
+    };
   },
 
   draw: function(context) {
