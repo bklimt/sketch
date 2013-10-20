@@ -68,7 +68,7 @@ var Diagram = Backbone.Model.extend({
 
     var file = new Parse.File("export.png", { base64: base64 });
 
-    Parse.Promise.as().then(function() {
+    return Parse.Promise.as().then(function() {
       return file.save();
 
     }).then(function(file) {
@@ -83,6 +83,7 @@ var Diagram = Backbone.Model.extend({
         url: url
       });
       $("#export-link").html(html);
+      return file;
 
     }).then(null, function(error) {
       console.error(error);
@@ -111,10 +112,20 @@ var Diagram = Backbone.Model.extend({
   },
 
   save: function() {
+    var model = this;
+
     var obj = new SavedDiagram();
     obj.set("json", this.toJSON());
-    return obj.save().then(function() {
+    return Parse.Promise.as().then(function() {
+      return model.export();
+
+    }).then(function(file) {
+      obj.set("preview", file);
+      return obj.save()
+
+    }).then(function() {
       diagrams.add(obj, { at: 0 });
+
     });
   },
 

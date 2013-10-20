@@ -17,7 +17,13 @@ var DiagramsView = Parse.View.extend({
 
     view.$el.empty();
     diagrams.each(function(saved) {
-      var $button = $("<div>").text(saved.id).button();
+      var template = "<div><img src='<%= thumbnail %>'><br/><%= id %></div>";
+      var html = _.template(template)({
+        thumbnail: saved.get("thumbnail").url(),
+        id: saved.id
+      });
+
+      var $button = $("<div>").html(html).button();
       view.$el.append($button);
       view.$el.append($("<br/>"));
 
