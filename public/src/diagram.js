@@ -198,7 +198,30 @@ var Diagram = Backbone.Model.extend({
       return !shape.selected;
     });
     this.redraw();
+  },
+
+  moveForward: function() {
+    for (var i = this.shapes.length - 2; i >= 0; i--) {
+      if (this.shapes[i].selected && !this.shapes[i+1].selected) {
+        var temp = this.shapes[i];
+        this.shapes[i] = this.shapes[i + 1];
+        this.shapes[i + 1] = temp;
+      }
+    }
+    this.redraw();
+  },
+
+  moveBackward: function() {
+    for (var i = 1; i < this.shapes.length; i++) {
+      if (this.shapes[i].selected && !this.shapes[i - 1].selected) {
+        var temp = this.shapes[i];
+        this.shapes[i] = this.shapes[i - 1];
+        this.shapes[i - 1] = temp;
+      }
+    }
+    this.redraw();
   }
+  
 });
 
 $(function(root) {
