@@ -1,10 +1,10 @@
 
-var Magnet = function(x, y) {
-  this.x = x;
-  this.y = y;
-};
+var Magnet = Backbone.Model.extend({
 
-_.extend(Magnet.prototype, {
+  initialize: function(attrs) {
+    this.x = attrs.x;
+    this.y = attrs.y;
+  },
 
   draw: function(context) {
     var width = 5;
@@ -20,13 +20,19 @@ _.extend(Magnet.prototype, {
   containsPoint: function(pt) {
     return (pt.x >= this.x - 4 && pt.x <= this.x + 4 && pt.y >= this.y - 4 &&
             pt.y <= this.y + 4);
-  }
-});
+  },
 
-_.extend(Magnet, {
+  toJSON: function() {
+    return { x: this.x, y: this.y };
+  }
+
+}, {
 
   add: function(magnet1, magnet2) {
-    return new Magnet(magnet1.x + magnet2.x, magnet1.y + magnet2.y);
+    return new Magnet({
+      x: magnet1.x + magnet2.x,
+      y: magnet1.y + magnet2.y
+    });
   },
 
   highlight: function(magnet) {

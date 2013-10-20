@@ -17,7 +17,7 @@ var Oval = Rectangle.extend({
     context.quadraticCurveTo(p3.x, p3.y, p1.x, p1.y + radius);
     context.quadraticCurveTo(p1.x, p1.y, p1.x + radius, p1.y);
     context.closePath();
-    context.fillStyle = this.color;
+    context.fillStyle = this.fillColor;
     context.fill();
   },
 

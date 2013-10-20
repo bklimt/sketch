@@ -3,7 +3,7 @@ var ShapeTool = SelectTool.extend(null, {
   description: "Shape Tool",
 
   mouseDown: function(point, shift) {
-    var shape = new this.type(point);
+    var shape = new this.type({ point: point });
     diagram.shapes.push(shape);
     diagram.selectShape(shape);
     SelectTool.startDragging(shape.getLastMagnet(), point);

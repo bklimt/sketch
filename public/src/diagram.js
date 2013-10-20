@@ -1,8 +1,32 @@
 
+var SavedDiagram = Parse.Object.extend("Diagram");
+
 var Diagram = Backbone.Model.extend({
-  initialize: function() {
+  initialize: function(attrs) {
+    attrs = attrs || {};
+
     this.shapes = [];
     this.$editor = $("#editor");
+
+    if (attrs.shapes) {
+      _.each(attrs.shapes, function(shape) {
+        if (shape.type === "line") {
+          this.shapes.push(new Line(shape));
+        } else if (shape.type === "rectangle") {
+          this.shapes.push(new Rectangle(shape));
+        } else if (shape.type === "circle") {
+          this.shapes.push(new Circle(shape));
+        } else if (shape.type === "oval") {
+          this.shapes.push(new Oval(shape));
+        } else if (shape.type === "text") {
+          this.shapes.push(new Text(shape));
+        } else if (shape.type === "image") {
+          this.shapes.push(new SketchImage(shape));
+        } else {
+          throw new Error("Unknown shape type: " + shape.type);
+        }
+      });
+    }
   },
 
   draw: function(canvas) {
@@ -47,8 +71,18 @@ var Diagram = Backbone.Model.extend({
     });
   },
 
+  save: function() {
+    var obj = new SavedDiagram();
+    obj.set("json", this.toJSON());
+    return obj.save().then(function() {
+      diagrams.add(obj, { at: 0 });
+    });
+  },
+
   toJSON: function() {
-    // TODO(klimt): Do this.
+    return {
+      shapes: _.map(this.shapes, function(shape) { return shape.toJSON(); })
+    }
   },
 
   selectShape: function(shape) {

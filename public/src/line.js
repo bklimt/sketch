@@ -2,23 +2,29 @@
 var Line = Backbone.Model.extend({
   type: "line",
 
-  initialize: function(point) {
-    this.width = 1;
-    this.color = "black";
-    this.magnets = _.times(3, function() {
-      return new Magnet(point.x, point.y);
-    });
+  initialize: function(attrs) {
+    this.strokeWidth = attrs.strokeWidth || attributes.get("strokeWidth");
+    this.strokeColor = attrs.strokeColor || attributes.get("strokeColor");;
+    if (attrs.magnets) {
+      this.magnets = _.map(attrs.magnets, function(m) {
+        return new Magnet(m);
+      });
+    } else {
+      this.magnets = _.times(3, function() {
+        return new Magnet(attrs.point);
+      });
+    }
 
     var model = this;
     attributes.on("change:strokeColor", function() {
       if (model.selected) {
-        model.color = attributes.get("strokeColor");
+        model.strokeColor = attributes.get("strokeColor");
         diagram.redraw();
       }
     });
     attributes.on("change:strokeWidth", function() {
       if (model.selected) {
-        model.width = attributes.get("strokeWidth");
+        model.strokeWidth = attributes.get("strokeWidth");
         diagram.redraw();
       }
     });
@@ -33,8 +39,8 @@ var Line = Backbone.Model.extend({
     var p1 = this.magnets[1];
     var p2 = this.magnets[2];
 
-    context.lineWidth = this.width;
-    context.strokeStyle = this.color;
+    context.lineWidth = this.strokeWidth;
+    context.strokeStyle = this.strokeColor;
     context.lineCap = 'round';
     context.beginPath();
     context.moveTo(p1.x, p1.y);
@@ -107,11 +113,12 @@ var Line = Backbone.Model.extend({
   toJSON: function() {
     return {
       type: this.type,
-      color: this.color,
-      width: this.color,
-      magnets: magnetListToJSON(this.magnets)
+      strokeColor: this.strokeColor,
+      strokeWidth: this.strokeWidth,
+      magnets: _.map(this.magnets, function(magnet) {
+        return magnet.toJSON();
+      })
     }
   }
-
 });
 

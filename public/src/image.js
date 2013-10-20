@@ -8,9 +8,15 @@ var SketchImage = Rectangle.extend({
     var width = attrs.width;
     var height = attrs.height;
 
-    this.magnets = _.times(5, function() {
-      return new Magnet(point.x, point.y);
-    });
+    if (attrs.magnets) {
+      this.magnets = _.map(attrs.magnets, function(m) {
+        return new Magnet(m);
+      });
+    } else {
+      this.magnets = _.times(5, function() {
+        return new Magnet(point);
+      });
+    }
 
     var p0 = this.magnets[0];
     var p1 = this.magnets[1];
@@ -49,7 +55,9 @@ var SketchImage = Rectangle.extend({
     return {
       type: this.type,
       url: this.url,
-      magnets: magnetListToJSON(this.magnets)
+      width: this.width,
+      height: this.height,
+      magnets: _.map(this.magnets, function(m) { return m.toJSON(); })
     };
   }
 });

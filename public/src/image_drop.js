@@ -8,6 +8,7 @@ $(function() {
 
   $imageDrop.on("drop", function(evt) {
     evt.preventDefault();
+
     var files = evt.originalEvent.dataTransfer.files;
     var file = files[0];
     var name = file.name;
@@ -19,11 +20,13 @@ $(function() {
 
     var parseFile = new Parse.File(name, file, type);
     Parse.Promise.as().then(function() {
+      $imageDrop.html("Uploading file...");
       return parseFile.save();
 
     }).then(function(file) {
       var image = new Parse.Object("ImageFile");
       image.set("file", file);
+      $imageDrop.html("Analyzing file...");
       return image.save();
 
     }).then(function(obj) {
@@ -41,8 +44,12 @@ $(function() {
       SelectTool.select();
       diagram.redraw();
 
+      $imageDrop.html("Drop an image here");
+
     }).then(null, function(error) {
       console.error(error);
+
+      $imageDrop.html("Drop an image here");
     });
   });
 });

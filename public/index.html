@@ -21,6 +21,7 @@
     <script src="src/text.js"></script>
 
     <script src="src/diagram.js"></script>
+    <script src="src/diagrams.js"></script>
 
     <script src="src/tool.js"></script>
     <script src="src/select_tool.js"></script>
@@ -29,34 +30,41 @@
 
     <script src="src/app.js"></script>
 
+    <script src="src/diagrams_view.js"></script>
+
   </head>
   <style>
 
     body { background-color: #cccccc }
     #toolbar { height: 75px; }
     #image-drop { background-color: #ffccff }
+    #content { float: left; }
+    #diagrams { float: left; background-color: #ffeeff }
 
   </style>
   <body>
-    <div id="toolbar">
-      <button onclick="LineTool.select()" />line</button>
-      <button onclick="RectangleTool.select()" />rectangle</button>
-      <button onclick="OvalTool.select()" />oval</button>
-      <button onclick="CircleTool.select()" />circle</button>
-      <button onclick="TextTool.select()" />text</button>
-      <span id="image-drop">Drop an image here</span>
-      <div id="attributes">
-        <span>fill color: <input id="fillColor"></input></span>
-        <span>stroke color: <input id="strokeColor"></input></span>
-        <span>stroke width: <input id="strokeWidth"></input></span>
-        <br/>
-        <span>font family: <input id="fontFamily"></input></span>
-        <span>font size: <input id="fontSize"></input></span>
-        <span>text: <input id="text"></input></span>
+    <div id="content">
+      <div id="toolbar">
+        <button onclick="diagram.save()">save</button>
+        <button onclick="LineTool.select()">line</button>
+        <button onclick="RectangleTool.select()">rectangle</button>
+        <button onclick="OvalTool.select()">oval</button>
+        <button onclick="CircleTool.select()">circle</button>
+        <button onclick="TextTool.select()">text</button>
+        <span id="image-drop">Drop an image here</span>
+        <div id="attributes">
+          <span>fill color: <input id="fillColor"></input></span>
+          <span>stroke color: <input id="strokeColor"></input></span>
+          <span>stroke width: <input id="strokeWidth"></input></span>
+          <br/>
+          <span>font family: <input id="fontFamily"></input></span>
+          <span>font size: <input id="fontSize"></input></span>
+          <span>text: <input id="text"></input></span>
+        </div>
       </div>
+      <canvas width="800" height="500"></canvas>
     </div>
-
-    <canvas width="800" height="500"></canvas>
+    <div id="diagrams"></div>
   </body>
 </html>
 

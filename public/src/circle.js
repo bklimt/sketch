@@ -13,7 +13,7 @@ var Circle = Oval.extend({
     context.beginPath();
     context.arc(p1.x + radius, p1.y + radius, radius, 0, 2 * Math.PI, false);
     context.closePath();
-    context.fillStyle = this.color;
+    context.fillStyle = this.fillColor;
     context.fill();
   }
 });

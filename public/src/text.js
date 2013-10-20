@@ -2,14 +2,20 @@
 var Text = Rectangle.extend({
   type: "text",
 
-  initialize: function(point) {
-    this.color = attributes.get("strokeColor");
-    this.text = attributes.get("text");
-    this.fontSize = attributes.get("fontSize");
-    this.fontFamily = attributes.get("fontFamily");
-    this.magnets = _.times(5, function() {
-      return new Magnet(point.x, point.y);
-    });
+  initialize: function(attrs) {
+    this.strokeColor = attrs.strokeColor || attributes.get("strokeColor");
+    this.text = attrs.text || attributes.get("text");
+    this.fontSize = attrs.fontSize || attributes.get("fontSize");
+    this.fontFamily = attrs.fontFamily || attributes.get("fontFamily");
+    if (attrs.magnets) {
+      this.magnets = _.map(attrs.magnets, function(m) {
+        return new Magnet(m);
+      });
+    } else {
+      this.magnets = _.times(5, function() {
+        return new Magnet(attrs.point);
+      });
+    }
 
     var model = this;
     attributes.on("change:text", function() {
@@ -20,7 +26,7 @@ var Text = Rectangle.extend({
     });
     attributes.on("change:strokeColor", function() {
       if (model.selected) {
-        model.color = attributes.get("strokeColor");
+        model.strokeColor = attributes.get("strokeColor");
         diagram.redraw();
       }
     });
@@ -46,7 +52,7 @@ var Text = Rectangle.extend({
     var p4 = this.magnets[4];
     context.font = this.fontSize + "pt " + this.fontFamily;
     context.textBaseline = "top";
-    context.fillStyle = this.color;
+    context.fillStyle = this.strokeColor;
     context.fillText(this.text, p1.x, p1.y);
   },
 
@@ -54,7 +60,12 @@ var Text = Rectangle.extend({
     return {
       type: this.type,
       text: this.text,
-      magnets: magnetListToJSON(this.magnets)
+      strokeColor: this.strokeColor,
+      fontFamily: this.fontFamily,
+      fontSize: this.fontSize,
+      magnets: _.map(this.magnets, function(magnet) {
+        return magnet.toJSON();
+      })
     }
   }
 });

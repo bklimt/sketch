@@ -2,16 +2,23 @@
 var Rectangle = Line.extend({
   type: "rectangle",
 
-  initialize: function(point) {
-    this.color = attributes.get("fillColor");
-    this.magnets = _.times(5, function() {
-      return new Magnet(point.x, point.y);
-    });
+  initialize: function(attrs) {
+    this.fillColor = attrs.fillColor || attributes.get("fillColor");
+
+    if (attrs.magnets) {
+      this.magnets = _.map(attrs.magnets, function(m) {
+        return new Magnet(m);
+      });
+    } else {
+      this.magnets = _.times(5, function() {
+        return new Magnet(attrs.point);
+      });
+    }
 
     var model = this;
     attributes.on("change:fillColor", function() {
       if (model.selected) {
-        model.color = attributes.get("fillColor");
+        model.fillColor = attributes.get("fillColor");
         diagram.redraw();
       }
     });
@@ -27,7 +34,7 @@ var Rectangle = Line.extend({
     var p2 = this.magnets[2];
     var p3 = this.magnets[3];
     var p4 = this.magnets[4];
-    context.fillStyle = this.color;
+    context.fillStyle = this.fillColor;
     context.fillRect(p1.x, p1.y, p4.x - p1.x, p4.y - p1.y);    
   },
 
@@ -85,8 +92,10 @@ var Rectangle = Line.extend({
   toJSON: function() {
     return {
       type: this.type,
-      color: this.color,
-      magnets: magnetListToJSON(this.magnets)
+      fillColor: this.fillColor,
+      magnets: _.map(this.magnets, function(magnet) {
+        return magnet.toJSON();
+      })
     };
   }
 });
