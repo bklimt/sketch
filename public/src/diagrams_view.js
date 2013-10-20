@@ -13,13 +13,18 @@ var DiagramsView = Parse.View.extend({
   },
 
   render: function() {
-    var $ul = $("<ul>");
-    diagrams.each(function(saved) {
-      $ul.append($("<li>").text(saved.id));
-    });
+    var view = this;
 
-    this.$el.empty();
-    this.$el.append($ul);
+    view.$el.empty();
+    diagrams.each(function(saved) {
+      var $button = $("<div>").text(saved.id).button();
+      view.$el.append($button);
+      view.$el.append($("<br/>"));
+
+      $button.click(function() {
+        diagram.load(saved);
+      });
+    });
   }
 });
 

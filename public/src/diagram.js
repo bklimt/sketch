@@ -9,24 +9,33 @@ var Diagram = Backbone.Model.extend({
     this.$editor = $("#editor");
 
     if (attrs.shapes) {
-      _.each(attrs.shapes, function(shape) {
-        if (shape.type === "line") {
-          this.shapes.push(new Line(shape));
-        } else if (shape.type === "rectangle") {
-          this.shapes.push(new Rectangle(shape));
-        } else if (shape.type === "circle") {
-          this.shapes.push(new Circle(shape));
-        } else if (shape.type === "oval") {
-          this.shapes.push(new Oval(shape));
-        } else if (shape.type === "text") {
-          this.shapes.push(new Text(shape));
-        } else if (shape.type === "image") {
-          this.shapes.push(new SketchImage(shape));
-        } else {
-          throw new Error("Unknown shape type: " + shape.type);
-        }
-      });
+      this.load(attrs);
     }
+  },
+
+  load: function(json) {
+    if (json instanceof SavedDiagram) {
+      return this.load(json.get("json"));
+    }
+
+    this.shapes = [];
+    _.each(json.shapes, function(shape) {
+      if (shape.type === "line") {
+        this.shapes.push(new Line(shape));
+      } else if (shape.type === "rectangle") {
+        this.shapes.push(new Rectangle(shape));
+      } else if (shape.type === "circle") {
+        this.shapes.push(new Circle(shape));
+      } else if (shape.type === "oval") {
+        this.shapes.push(new Oval(shape));
+      } else if (shape.type === "text") {
+        this.shapes.push(new Text(shape));
+      } else if (shape.type === "image") {
+        this.shapes.push(new SketchImage(shape));
+      } else {
+        throw new Error("Unknown shape type: " + shape.type);
+      }
+    }, this);
   },
 
   draw: function(canvas) {
