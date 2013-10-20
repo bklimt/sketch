@@ -4,9 +4,10 @@ var SketchImage = Rectangle.extend({
 
   initialize: function(attrs) {
     var point = attrs.point;
-    var url = attrs.url;
-    var width = attrs.width;
-    var height = attrs.height;
+
+    this.url = attrs.url;
+    this.width = attrs.width;
+    this.height = attrs.height;
 
     if (attrs.magnets) {
       this.magnets = _.map(attrs.magnets, function(m) {
@@ -24,17 +25,17 @@ var SketchImage = Rectangle.extend({
     var p3 = this.magnets[3];
     var p4 = this.magnets[4];
 
-    p0.x = p1.x + (width / 2);
-    p0.y = p1.y + (height / 2);
-    p4.x = p1.x + width;
-    p4.y = p1.y + height;
+    p0.x = p1.x + (this.width / 2);
+    p0.y = p1.y + (this.height / 2);
+    p4.x = p1.x + this.width;
+    p4.y = p1.y + this.height;
     p2.x = p4.x;
     p2.y = p1.y;
     p3.x = p1.x;
     p3.y = p4.y;
 
     this.data = new Image();
-    this.data.src = url;
+    this.data.src = this.url;
   },
 
   draw: function(context) {

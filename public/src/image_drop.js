@@ -2,11 +2,14 @@
 $(function() {
   var $imageDrop = $("#image-drop");
 
-  $imageDrop.on("dragover", function(evt) {
+  var dragover = function(evt) {
     evt.preventDefault();
-  });
+  };
 
-  $imageDrop.on("drop", function(evt) {
+  $imageDrop.on("dragover", dragover);
+  $("canvas").on("dragover", dragover);
+
+  var drop = function(evt) {
     evt.preventDefault();
 
     var files = evt.originalEvent.dataTransfer.files;
@@ -51,6 +54,10 @@ $(function() {
 
       $imageDrop.html("Drop an image here");
     });
-  });
+  };
+
+  $imageDrop.on("drop", drop);
+  $("canvas").on("drop", drop);  
+
 });
 
