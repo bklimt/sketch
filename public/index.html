@@ -18,15 +18,13 @@
     <script src="src/oval.js"></script>
     <script src="src/circle.js"></script>
     <script src="src/image.js"></script>
+    <script src="src/text.js"></script>
 
     <script src="src/diagram.js"></script>
 
     <script src="src/tool.js"></script>
     <script src="src/select_tool.js"></script>
-    <script src="src/line_tool.js"></script>
-    <script src="src/rectangle_tool.js"></script>
-    <script src="src/oval_tool.js"></script>
-    <script src="src/circle_tool.js"></script>
+    <script src="src/shape_tool.js"></script>
     <script src="src/image_drop.js"></script>
 
     <script src="src/app.js"></script>
@@ -35,7 +33,7 @@
   <style>
 
     body { background-color: #cccccc }
-    #toolbar { height: 50px; }
+    #toolbar { height: 75px; }
     #image-drop { background-color: #ffccff }
 
   </style>
@@ -45,11 +43,16 @@
       <button onclick="RectangleTool.select()" />rectangle</button>
       <button onclick="OvalTool.select()" />oval</button>
       <button onclick="CircleTool.select()" />circle</button>
+      <button onclick="TextTool.select()" />text</button>
       <span id="image-drop">Drop an image here</span>
       <div id="attributes">
         <span>fill color: <input id="fillColor"></input></span>
         <span>stroke color: <input id="strokeColor"></input></span>
         <span>stroke width: <input id="strokeWidth"></input></span>
+        <br/>
+        <span>font family: <input id="fontFamily"></input></span>
+        <span>font size: <input id="fontSize"></input></span>
+        <span>text: <input id="text"></input></span>
       </div>
     </div>
 
