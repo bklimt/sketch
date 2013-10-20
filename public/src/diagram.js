@@ -40,6 +40,10 @@ var Diagram = Backbone.Model.extend({
     this.redraw();
   },
 
+  clear: function() {
+    this.load({ shapes: [] });
+  },
+
   draw: function(canvas) {
     canvas = canvas || $("canvas");
     var context = canvas[0].getContext("2d");
@@ -187,6 +191,13 @@ var Diagram = Backbone.Model.extend({
     if (!shift) {
       this.selectNone();
     }
+  },
+
+  deleteSelected: function() {
+    this.shapes = _.filter(this.shapes, function(shape) {
+      return !shape.selected;
+    });
+    this.redraw();
   }
 });
 
