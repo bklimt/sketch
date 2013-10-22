@@ -3,14 +3,12 @@ var SelectTool = Tool.extend(null, {
   description: "Select Tool",
 
   startDragging: function(magnet, point) {
-console.log("started dragging");
     SelectTool.isMouseDown = true;
     SelectTool.selectedMagnets = [magnet];
     SelectTool.previousPosition = point;
   },
 
   mouseDown: function(point, shift) {
-console.log("mouse is down");
     SelectTool.isMouseDown = true;
     diagram.selectPoint(point, shift);
     SelectTool.previousPosition = point;
@@ -18,7 +16,6 @@ console.log("mouse is down");
   },
 
   mouseUp: function(point, shift) {
-console.log("mouse is up");
     SelectTool.isMouseDown = false;
     SelectTool.selectedMagnets = [];
     SelectTool.previousPosition = null;
@@ -27,7 +24,6 @@ console.log("mouse is up");
   mouseMove: function(point, shift) {
     Magnet.highlight(diagram.getMagnetAtPoint(point));
     if (SelectTool.isMouseDown) {
-console.log("mouse dragged");
       diagram.highlightNone();
       _.each(SelectTool.selectedMagnets, function(magnet) {
         var negatedPreviousPosition = {
