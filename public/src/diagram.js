@@ -66,6 +66,9 @@ var Diagram = Backbone.Model.extend({
   },
 
   export: function() {
+    this.selectNone();
+    this.redraw();
+
     var canvas = $("canvas");
     var dataURL = canvas[0].toDataURL("image/png");
     var base64 = /^data:image\/png;base64,(.*)$/.exec(dataURL)[1]
@@ -81,7 +84,7 @@ var Diagram = Backbone.Model.extend({
       return obj.save();
 
     }).then(function(obj) {
-      var url = "http://anysketch.parseapp.com/file/" + obj.id;
+      var url = "http://anysketch.parseapp.com/image/" + obj.id + ".png";
       var template = "<a target='_blank' href='<%= url %>'>exported file</a>";
       var html = _.template(template)({
         url: url
@@ -163,9 +166,10 @@ var Diagram = Backbone.Model.extend({
     }
 
     // No magnets were found. Try selecting an object.
-    var shape = _.find(this.shapes, function(shape) {
+    var selected = _.filter(this.shapes, function(shape) {
       return shape.containsPoint(point);
     });
+    var shape = _.last(selected);
     if (shape) {
       if (shape.selected && shift) {
         shape.selected = false;
