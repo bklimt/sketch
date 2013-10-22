@@ -6,7 +6,6 @@ var Diagram = Backbone.Model.extend({
     attrs = attrs || {};
 
     this.shapes = [];
-    this.$editor = $("#editor");
 
     if (attrs.shapes) {
       this.load(attrs);
@@ -53,6 +52,8 @@ var Diagram = Backbone.Model.extend({
     _.each(this.shapes, function(shape) {
       if (this.isSelected(shape)) {
         shape.drawSelected(context);
+      } else if (this.isHighlighted(shape)) {
+        shape.drawHighlighted(context);
       }
     }, this);
   },
@@ -142,6 +143,30 @@ var Diagram = Backbone.Model.extend({
     }
   },
 
+  getShapeAtPoint: function(point) {
+    var selected = _.filter(this.shapes, function(shape) {
+      return shape.containsPoint(point);
+    });
+    return _.last(selected);
+  },
+
+  highlightShape: function(shape) {
+    this.highlightNone();
+    if (shape) {
+      shape.highlighted = true;
+    }
+  },
+
+  isHighlighted: function(shape) {
+    return shape.highlighted;
+  },
+
+  highlightNone: function() {
+    _.each(this.shapes, function(shape) {
+      shape.highlighted = false;
+    });
+  },
+
   selectShape: function(shape) {
     this.selectNone();
     shape.selected = true;
@@ -155,7 +180,6 @@ var Diagram = Backbone.Model.extend({
     _.each(this.shapes, function(shape) {
       shape.selected = false;
     });
-    this.$editor.empty();
   },
 
   selectPoint: function(point, shift) {
@@ -166,14 +190,10 @@ var Diagram = Backbone.Model.extend({
     }
 
     // No magnets were found. Try selecting an object.
-    var selected = _.filter(this.shapes, function(shape) {
-      return shape.containsPoint(point);
-    });
-    var shape = _.last(selected);
+    var shape = this.getShapeAtPoint(point);
     if (shape) {
       if (shape.selected && shift) {
         shape.selected = false;
-        this.$editor.empty();
         SelectTool.selectedMagnets = [];
       } else {
         if (!shape.selected && !shift) {

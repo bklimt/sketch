@@ -8,12 +8,16 @@ var Magnet = Backbone.Model.extend({
 
   draw: function(context) {
     var width = 5;
+    context.fillStyle = "rgb(0, 0, 0)";
     if (this === Magnet.highlighted) {
       width = 10;
-      context.fillStyle = "rgb(100, 100, 0)";
-    } else {
-      context.fillStyle = "rgb(0, 0, 0)";
     }
+    context.fillRect(this.x - width / 2, this.y - width / 2, width, width);
+  },
+
+  drawHighlighted: function(context) {
+    width = 5;
+    context.fillStyle = "rgb(150, 150, 150)";
     context.fillRect(this.x - width / 2, this.y - width / 2, width, width);
   },
 

@@ -55,6 +55,12 @@ var Line = Backbone.Model.extend({
     });
   },
 
+  drawHighlighted: function(context) {
+    _.each(this.magnets, function(magnet) {
+      magnet.drawHighlighted(context);
+    });
+  },
+
   containsPoint: function(point) {
     var p0 = this.magnets[0];
     var p1 = this.magnets[1];
