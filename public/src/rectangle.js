@@ -44,10 +44,18 @@ var Rectangle = Line.extend({
     var p2 = this.magnets[2];
     var p3 = this.magnets[3];
     var p4 = this.magnets[4];
-    return (pt.x > p1.x && pt.y > p1.y && pt.x < p4.x && pt.y < p4.y);
+    var inX = (pt.x > p1.x && pt.x < p4.x) || (pt.x > p4.x && pt.x < p1.x);
+    var inY = (pt.y > p1.y && pt.y < p4.y) || (pt.y > p4.y && pt.y < p1.y);
+    return inX && inY;
   },
 
   moveMagnet: function(oldMagnet, newMagnet) {
+    /*
+     * 1 2
+     *  0
+     * 3 4
+     */
+
     var p0 = this.magnets[0];
     var p1 = this.magnets[1];
     var p2 = this.magnets[2];
@@ -55,6 +63,8 @@ var Rectangle = Line.extend({
     var p4 = this.magnets[4];
     var width = p4.x - p1.x;
     var height = p4.y - p1.y;
+
+    // Make sure p1 and width and height are correct.
 
     if (oldMagnet === p0) {
       p1.x = newMagnet.x - width / 2;
@@ -79,6 +89,8 @@ var Rectangle = Line.extend({
       return;
     }
 
+    // Put everything else into the right relative position.
+
     p0.x = p1.x + (width / 2);
     p0.y = p1.y + (height / 2);
     p4.x = p1.x + width;
@@ -87,6 +99,28 @@ var Rectangle = Line.extend({
     p2.y = p1.y;
     p3.x = p1.x;
     p3.y = p4.y;
+
+    // Flip the thing if it's backwards.
+    // Actually, this won't work because the wrong magnet is selected.
+    /*
+    if (width < 0) {
+      // This is flipped around the y axis.
+      p1.x = p4.x;
+      p3.x = p2.x;
+      p3.x = p1.x;
+      p4.x = p2.x;
+      p0.x = (p1.x + p2.x) / 2;
+    }
+
+    if (height < 0) {
+      // This is flipped around the x axis.
+      p1.y = p4.y;
+      p3.y = p2.y;
+      p2.y = p1.y;
+      p4.y = p3.y;
+      p0.y = (p1.y + p3.y) / 2;
+    }
+    */
   },
   
   toJSON: function() {

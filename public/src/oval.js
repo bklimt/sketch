@@ -28,10 +28,11 @@ var Oval = Rectangle.extend({
     var p3 = this.magnets[3];
     var p4 = this.magnets[4];
     var radius = (p4.x - p1.x) / 2;
+    var radiusSquared = radius * radius;
     var xdist = point.x - (p1.x + radius);
     var ydist = point.y - (p1.y + radius);
-    var dist = Math.sqrt(xdist * xdist + ydist * ydist);
-    return (dist < radius);
+    var distSquared = xdist * xdist + ydist * ydist;
+    return (distSquared < radiusSquared);
   }
 });
 
